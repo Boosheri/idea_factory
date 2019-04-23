@@ -1,0 +1,99 @@
+<h3><%= @idea.title %></h3>
+
+<p><%= @idea.description %></p>
+
+<div>
+  <small>
+    Posted <%= time_ago_in_words(@idea.created_at)  %> ago by <%= @idea.user.name %>
+  </small>
+</div>
+
+<div>
+  <% if can?(:crud, @idea) %>
+    <small>
+        <%= link_to "Edit", edit_idea_path(@idea), class: "btn btn-outline-primary" %>
+
+    </small> 
+    
+    <small>
+        <%= link_to(
+        "Delete", idea_path(@idea), class: "btn btn-outline-primary",
+        method: :delete,
+        data: { confirm: "Are you sure?"}) %>
+  <% end %>
+
+    </small>
+</div>
+
+</br>
+
+<div>
+  <% if @like.present? %>
+    <%=
+      link_to(
+        "Liked",
+        idea_like_path(@idea, @like),
+        method: :delete
+      )
+    %>
+  <% else %>
+    <%=
+      link_to(
+        "Like",
+        idea_likes_path(@idea),
+        method: :post
+      )
+    %>
+  <% end %>
+
+  <span><%= pluralize(@idea.likes.count, "like") %></span>
+</div>
+
+</br>
+
+<section>
+  <h3>Reviews</h3>
+
+  <%= form_with(model: [@idea, @review], local: true) do |f| %>
+    <% if @review.errors.present? %>
+      <p class="form-errors">
+        <%= @review.errors.full_messages.join(", ") %>
+      </p>
+    <% end %>
+
+
+    <div class="form-group">
+        <%= f.text_area(
+      :body, cols: 50, rows: 5,
+      placeholder: "What are your thoughts about this idea?",
+      class: "form-control"
+      ) %>
+    </div>
+    <%= f.submit "Submit Review", class: "btn btn-outline-primary" %>
+  <% end %>
+</section>
+
+  </br>
+  
+<section>
+  <% @reviews.each do |review| %>
+    <p>
+      <%= review.body %> <br />
+      Posted by <%= review.user.name %>
+      <div>
+          <% if can?(:crud, review) %>
+        <small>
+          <%= link_to(
+          "Delete",
+          idea_review_path(@idea, review),
+          method: :delete, data: {
+            confirm: "Are you sure?"
+          }
+          ) %>
+          </small>
+        <% end %>
+      </div>
+    </p>
+  <% end %>
+
+</section>

@@ -10,6 +10,35 @@
   </head>
 
   <body>
+    <nav class="navbar bg-light">
+
+    <span class="navbar-text">
+  <img src="https://cdn0.iconfinder.com/data/icons/colourful-education/250/bulb-512.png" class="nav-image">
+       
+    <%= link_to 'Home', root_path %>
+    |
+    <%= link_to 'New Idea', new_idea_path %>
+    |
+    <%= link_to 'All Ideas', ideas_path %>
+    </span>
+
+    <span class="navbar-text">
+    <% if user_signed_in? %>
+      Hello <%= current_user.name %> |
+      <%= link_to "Logout", session_path, method: :delete, data: {confirm: "are you sure you want to log out?"} %>
+    <% else %>
+      <%= link_to "Login", new_session_path %>
+      |
+      <%= link_to "Sign Up", new_user_path %>
+    <% end %>
+    <% flash.each do |type, message| %>
+      <div class="flash flash-<%= type %>">
+        <%= message %>
+      </div>
+      </span>
+    <% end %>
+
+    </nav>
     <%= yield %>
   </body>
 </html>

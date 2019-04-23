@@ -1,0 +1,29 @@
+
+<%= form_with(model: [@idea], local: true) do |f| %>
+
+
+
+    <% if @idea.errors.present? %>
+        <p class="form-errors">
+        <%= @idea.errors.full_messages.join(", ") %>  
+      </p>
+    <% end %>
+      <%= f.label :title %>
+    <div class="form-group">
+
+        <%= f.text_field(
+        :title, cols: 50,
+        class: "form-control"
+        ) %>
+    </div>
+    
+      <%= f.label :description %>
+    <div class="form-group">
+
+        <%= f.text_area(
+        :description, cols: 50, rows: 5,
+        class: "form-control"
+        ) %>
+    </div>
+        <%= f.submit "Submit", class: "btn btn-outline-primary" %>
+  <% end %>
